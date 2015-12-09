@@ -11,9 +11,14 @@ matrix:
 sudo: false
 
 before_install:
-  - ls -la /home/travis/.phpenv/versions/5.4/etc/conf.d
-  - cat /home/travis/.phpenv/versions/5.4/etc/conf.d/xdebug.ini  
-  - if [ ! "$NOXDEBUG" = "yes" ]; then phpenv config-rm xdebug.ini; fi;
+  - LOCAL_DIR="build"
+  - XDEBUG_FILE=".phpenv/versions/5.4/etc/conf.d/xdebug.ini"
+  - cat /home/travis
+  - phpenv --help
+  - if [ ! "$NOXDEBUG" = "yes" ]; then 
+        mkdir -p $LOCAL_DIR &&
+        mv $XDEBUG_FILE $LOCAL_DIR;
+    fi;
   - composer self-update
 
 install:
@@ -27,6 +32,7 @@ install:
 script:
   - >
     if [ "$CHECKS" = "yes" ]; then 
+        mv $XDEBUG_FILE $LOCAL_DIR &&
         mkdir -p build/logs &&
         phpunit --coverage-clover build/logs/clover.xml &&
         [[ -e build/logs/clover.xml ]] &&
