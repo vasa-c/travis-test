@@ -16,6 +16,5 @@ class Sum
         $a = Binary::getByteFromChar($a);
         $b = Binary::getByteFromChar($b);
         return chr($a + $b);
-    }    
+    }
 }
-

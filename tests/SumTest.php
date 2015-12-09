@@ -11,4 +11,3 @@ class SumTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(chr(195), Sum::plus('a', 'b'));
     }
 }
-
