@@ -6,10 +6,12 @@ matrix:
       env: CHECKS=yes
     - php: 5.5
     - php: hhvm
+      env: NOXDEBUG=yes
 
 sudo: false
 
 before_install:
+  - if [ ! "$NOXDEBUG" = "yes" ]; then phpenv config-rm xdebug.ini; fi;
   - composer self-update
 
 install:
