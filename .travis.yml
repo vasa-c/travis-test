@@ -4,22 +4,25 @@ matrix:
   include:
     - php: 5.4
       env: CHECKS=yes
-    - php: 5.5
-    - php: hhvm
-      env: NOXDEBUG=yes
+   # - php: 5.5
+   # - php: hhvm
+   #   env: NOXDEBUG=yes
 
 sudo: false
 
 before_install:
-  - ll /home/travis/.phpenv/versions/5.4/etc/conf.d
+  - ls -la /home/travis/.phpenv/versions/5.4/etc/conf.d
   - cat /home/travis/.phpenv/versions/5.4/etc/conf.d/xdebug.ini  
   - if [ ! "$NOXDEBUG" = "yes" ]; then phpenv config-rm xdebug.ini; fi;
   - composer self-update
 
 install:
   - composer install
-  - if [ "$CHECKS" = "yes" ]; then composer require satooshi/php-coveralls --dev; fi;
-  - if [ "$CHECKS" = "yes" ]; then composer require squizlabs/php_codesniffer="~2.3" --dev; fi;
+  - >
+    if [ "$CHECKS" = "yes" ]; then 
+        composer require satooshi/php-coveralls --dev &&
+        composer require squizlabs/php_codesniffer="~2.3"
+    fi;
 
 script:
   - if [ "$CHECKS" = "yes" ]; then mkdir -p build/logs; fi;
