@@ -26,7 +26,7 @@ install:
         composer require squizlabs/php_codesniffer="~2.3" &&    
         composer require satooshi/php-coveralls --dev &&
         echo "src_dir ." > .coveralls.yml &&
-        echo "coverage_clover: "$LOCAL_DIR"/logs/clover.xml" &&
+        echo "coverage_clover: "$LOCAL_DIR"/logs/clover.xml" >> .coveralls.yml &&
         cat .coveralls.yml
     fi;
 
