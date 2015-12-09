@@ -4,17 +4,15 @@ matrix:
   include:
     - php: 5.4
       env: CHECKS=yes
-   # - php: 5.5
-   # - php: hhvm
-   #   env: NOXDEBUG=yes
+    - php: 5.5
+    - php: hhvm
+      env: NOXDEBUG=yes
 
 sudo: false
 
 before_install:
-  - pwd
-  - LOCAL_DIR="build"
+  - LOCAL_DIR="local"
   - EXT_DIR="/home/travis/.phpenv/versions/5.4/etc/conf.d"
-  - phpenv --help
   - if [ ! "$NOXDEBUG" = "yes" ]; then 
         mkdir -p $LOCAL_DIR &&
         mv $EXT_DIR"/xdebug.ini" $LOCAL_DIR"/xdebug.ini";
@@ -25,8 +23,11 @@ install:
   - composer install
   - >
     if [ "$CHECKS" = "yes" ]; then 
+        composer require squizlabs/php_codesniffer="~2.3" &&    
         composer require satooshi/php-coveralls --dev &&
-        composer require squizlabs/php_codesniffer="~2.3"
+        echo "src_dir ." > .coveralls.yml &&
+        echo "coverage_clover: "$LOCAL_DIR"/logs/clover.xml" &&
+        cat .coveralls.yml
     fi;
 
 script:
@@ -34,8 +35,8 @@ script:
     if [ "$CHECKS" = "yes" ]; then 
         mv $LOCAL_DIR"/xdebug.ini" $EXT_DIR"/xdebug.ini" &&
         mkdir -p build/logs &&
-        phpunit --coverage-clover build/logs/clover.xml &&
-        [[ -e build/logs/clover.xml ]] &&
+        phpunit --coverage-clover $LOCAL_DIR"/logs/clover.xml" &&
+        [[ -e $LOCAL_DIR"/logs/clover.xml" ]] &&
         php vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 --ignore=vendor .
     else
         phpunit;
