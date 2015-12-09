@@ -11,6 +11,8 @@ matrix:
 sudo: false
 
 before_install:
+  - ll /home/travis/.phpenv/versions/5.4/etc/conf.d
+  - cat /home/travis/.phpenv/versions/5.4/etc/conf.d/xdebug.ini  
   - if [ ! "$NOXDEBUG" = "yes" ]; then phpenv config-rm xdebug.ini; fi;
   - composer self-update
 
