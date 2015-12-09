@@ -13,7 +13,7 @@ sudo: false
 before_install:
   - pwd
   - LOCAL_DIR="build"
-  - EXT_DIR="/home/travis/.phpenv/versions/5.4/etc/conf.d/xdebug.ini"
+  - EXT_DIR="/home/travis/.phpenv/versions/5.4/etc/conf.d"
   - phpenv --help
   - if [ ! "$NOXDEBUG" = "yes" ]; then 
         mkdir -p $LOCAL_DIR &&
