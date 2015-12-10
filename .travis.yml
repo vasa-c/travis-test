@@ -6,6 +6,7 @@ matrix:
       env: CHECKS=yes
     - php: 5.5
     - php: hhvm
+      # no debug
       env: NOXDEBUG=yes
 
 sudo: false
@@ -17,13 +18,18 @@ before_install:
   - composer self-update
 
 install:
+  #
   - composer install --prefer-source
+  
+  # This is comment
+  #
   - if [ "$CHECKS" = "yes" ]; then composer require squizlabs/php_codesniffer="~2.3" --prefer-source; fi;
   - if [ "$CHECKS" = "yes" ]; then composer require satooshi/php-coveralls --dev --prefer-source; fi;
   - >
     if [ "$CHECKS" = "yes" ]; then 
         echo "src_dir: ." > .coveralls.yml &&
-        echo "coverage_clover: "$CLOVER_FILE >> .coveralls.yml; 
+        echo "coverage_clover: "$CLOVER_FILE >> .coveralls.yml &&
+        cat .coveralls.yml
     fi;
   - if [ "$CHECKS" = "yes" ]; then phpenv config-add xdebug.ini $EXT_DIR; fi;    
 
