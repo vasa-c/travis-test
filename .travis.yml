@@ -27,7 +27,7 @@ before_install:
   - if [ -f $XDEBUG_INI ]; then XDEBUG_ENABLED="yes"; fi;
   # Disable xdebug for composer (https://getcomposer.org/doc/articles/troubleshooting.md#xdebug-impact-on-composer)
   # Do not use `phpenv config-rm` because we need xdebug.ini for enable it for phpunit coverage.
-  - if [ "XDEBUG_ENABLED" = "yes" ]; then mv $XDEBUG_INI .; fi;
+  - if [ "XDEBUG_ENABLED" = "yes" ]; then mv $XDEBUG_INI xdebug.ini; fi;
   # Travis container may contain outdated version of composer
   - composer self-update
   # Checks if the system phpunit is broken (sometimes it happens). Then install phpunit from composer.
@@ -49,12 +49,13 @@ install:
     fi;
 
 script:
+  - ls -la
   # Normal run - only phpunit
   - if [ ! "$CHECKS" = "yes" ]; then phpunit; fi;
   # Run with checks
   - if [ "$CHECKS" = "yes" ]; then php vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 --ignore=vendor .; fi;
   # Enable xdebug for coverage
-  - if [ "$CHECKS" = "yes" ] && [ "$XDEBUG_ENABLED" = "yes" ]; then phpenv config-add xdebug.ini $EXT_DIR; fi;
+  - if [ "$CHECKS" = "yes" ] && [ "$XDEBUG_ENABLED" = "yes" ]; then phpenv config-add xdebug.ini; fi;
   - if [ "$CHECKS" = "yes" ]; then phpunit --coverage-clover clover.xml; fi;
   # Coveralls in `script` section instead `after_succes` for build fail if when error
   - if [ "$CHECKS" = "yes" ]; then php vendor/bin/coveralls -c .coveralls.yml; fi;
