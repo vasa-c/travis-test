@@ -12,9 +12,7 @@ matrix:
 sudo: false
 
 before_install:
-  - CLOVER_FILE="clover.xml"
-  - EXT_DIR="/home/travis/.phpenv/versions/5.4/etc/conf.d"
-  - if [ ! "$NOXDEBUG" = "yes" ]; then mv $EXT_DIR"/xdebug.ini" .; fi;
+  - if [ ! "$NOXDEBUG" = "yes" ]; then mv /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini .; fi;
   - composer self-update
 
 install:
@@ -28,7 +26,8 @@ install:
   - >
     if [ "$CHECKS" = "yes" ]; then 
         echo "src_dir: ." > .coveralls.yml &&
-        echo "coverage_clover: "$CLOVER_FILE >> .coveralls.yml &&
+        echo "json_path: coveralls-upload.json" >> .coveralls.yml &&
+        echo "coverage_clover: clover.xml" >> .coveralls.yml &&
         cat .coveralls.yml
     fi;
   - if [ "$CHECKS" = "yes" ]; then phpenv config-add xdebug.ini $EXT_DIR; fi;    
@@ -36,9 +35,7 @@ install:
 script:
   - if [ ! "$CHECKS" = "yes" ]; then phpunit; fi;
   - if [ "$CHECKS" = "yes" ]; then php vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 --ignore=vendor .; fi;    
-  - if [ "$CHECKS" = "yes" ]; then phpunit --coverage-clover $CLOVER_FILE; fi;        
-
-after_success:
+  - if [ "$CHECKS" = "yes" ]; then phpunit --coverage-clover clover.xml; fi;
   - if [ "$CHECKS" = "yes" ]; then php vendor/bin/coveralls -c .coveralls.yml; fi;
 
 notifications:
