@@ -29,7 +29,8 @@ before_install:
   - if [ ! "$NOXDEBUG" = "yes" ]; then mv /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini .; fi;
   # Travis container may contain outdated version of composer
   - composer self-update
-  - phpunit --version
+  - if [ ! phpunit --version]; then PHPUNIT_BROKEN="yes"; fi;
+  - echo $PHPUNIT_BROKEN;
 
 install:
   # Composer can not used dist (github required the auth token). Just specify prefer-source.
