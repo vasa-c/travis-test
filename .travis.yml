@@ -11,11 +11,10 @@ matrix:
 sudo: false
 
 before_install:
-  - LOCAL_DIR="local"
+  - CLOVER_FILE="clover.xml"
   - EXT_DIR="/home/travis/.phpenv/versions/5.4/etc/conf.d"
   - if [ ! "$NOXDEBUG" = "yes" ]; then 
-        mkdir -p $LOCAL_DIR &&
-        mv $EXT_DIR"/xdebug.ini" $LOCAL_DIR"/xdebug.ini";
+        mv $EXT_DIR"/xdebug.ini" .;
     fi;
   - composer self-update
 
@@ -23,20 +22,20 @@ install:
   - composer install
   - >
     if [ "$CHECKS" = "yes" ]; then 
-        composer require squizlabs/php_codesniffer="~2.3" &&    
+        composer require squizlabs/php_codesniffer="~2.3" &&
         composer require satooshi/php-coveralls --dev &&
-        echo "src_dir ." > .coveralls.yml &&
-        echo "coverage_clover: "$LOCAL_DIR"/logs/clover.xml" >> .coveralls.yml &&
+        echo "src_dir: ." > .coveralls.yml &&
+        echo "coverage_clover: CLOVER_FILE >> .coveralls.yml &&
         cat .coveralls.yml
     fi;
 
 script:
   - >
     if [ "$CHECKS" = "yes" ]; then 
-        mv $LOCAL_DIR"/xdebug.ini" $EXT_DIR"/xdebug.ini" &&
+        mv xdebug.ini $EXT_DIR &&
         mkdir -p build/logs &&
-        phpunit --coverage-clover $LOCAL_DIR"/logs/clover.xml" &&
-        [[ -e $LOCAL_DIR"/logs/clover.xml" ]] &&
+        phpunit --coverage-clover CLOVER_FILE &&
+        [[ -e $CLOVER_FILE ]] &&
         php vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 --ignore=vendor .
     else
         phpunit;
