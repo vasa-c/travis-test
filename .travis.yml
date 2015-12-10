@@ -31,6 +31,7 @@ before_install:
   - composer self-update
 
 install:
+  - ls -la /home/travis/.phpenv/versions/$(phpenv version-name)/bin/
   # Composer can not used dist (github required the auth token). Just specify prefer-source.
   - composer install --prefer-source
   # In order not to litter in the local dev-version specify checks-packages here instead composer.json
