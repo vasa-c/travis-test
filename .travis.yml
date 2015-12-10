@@ -1,11 +1,11 @@
 # Travis config for PHP library
 #
 # Normal build - only phpunit
+#
 # Build with checks:
 # - code sniffer
 # - phpunit with coverage
 # - sending coverage data to coveralls.io
-#
 # Checks are used only for one version (PHP 5.4)
 
 language: php
@@ -36,7 +36,7 @@ install:
   # Composer can not used dist (github required the auth token). Just specify prefer-source.
   - composer install --prefer-source
   # In order not to litter in the local dev-version specify checks-packages here instead composer.json
-  - if [ "$PHPUNIT_BROKEN = "yes" ] composer require phpunit/phpunit --prefer-source; alias phpunit='php vendor/bin/phpunit'; fi;
+  - if [ "$PHPUNIT_BROKEN" = "yes" ] composer require phpunit/phpunit --prefer-source; alias phpunit='php vendor/bin/phpunit'; fi;
   - if [ "$CHECKS" = "yes" ]; then composer require squizlabs/php_codesniffer="~2.3" --prefer-source; fi;
   - if [ "$CHECKS" = "yes" ]; then composer require satooshi/php-coveralls --dev --prefer-source; fi;
   # Generate the coveralls config (not to keep it in the repo)
