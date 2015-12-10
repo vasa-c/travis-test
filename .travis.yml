@@ -34,7 +34,7 @@ script:
     if [ "$CHECKS" = "yes" ]; then 
         mv xdebug.ini $EXT_DIR &&
         mkdir -p build/logs &&
-        phpunit --coverage-clover CLOVER_FILE &&
+        phpunit --coverage-clover $CLOVER_FILE &&
         [[ -e $CLOVER_FILE ]] &&
         php vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 --ignore=vendor .
     else
