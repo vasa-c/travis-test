@@ -29,6 +29,7 @@ before_install:
   - if [ ! "$NOXDEBUG" = "yes" ]; then mv /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini .; fi;
   # Travis container may contain outdated version of composer
   - composer self-update
+  # Checks if the system phpunit is broken (sometimes it happens). Then install phpunit from composer.
   - phpunit --version || PHPUNIT_BROKEN="yes"
 
 install:
