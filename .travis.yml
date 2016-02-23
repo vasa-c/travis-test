@@ -54,7 +54,6 @@ install:
     fi;
 
 script:
-  - ls -la
   # Normal run - only phpunit
   - if [ ! "$CHECKS" = "yes" ]; then $PU; fi;
   # Run with checks
