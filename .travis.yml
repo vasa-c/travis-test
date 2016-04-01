@@ -38,6 +38,7 @@ before_install:
   - if [ "$PHPUNIT_BROKEN" = "yes" ]; then echo "PHPUnit is broken"; else echo "PHPUnit is ok"; fi;
 
 install:
+  - php -r "echo PHP_VERSION.PHP_EOL;"
   # Composer can not used dist (github required the auth token). Just specify prefer-source.
   - composer install --prefer-source
   # In order not to litter in the local dev-version specify checks-packages here instead composer.json
@@ -53,7 +54,6 @@ install:
         echo "json_path: coveralls-upload.json" > .coveralls.yml &&
         echo "coverage_clover: clover.xml" >> .coveralls.yml;
     fi;
-  - php -r "echo PHP_VERSION.PHP_EOL;"
 
 script:
   # Normal run - only phpunit
