@@ -45,7 +45,7 @@ install:
   - if [ "$PHPUNIT_BROKEN" = "yes" ]; then PU="php vendor/bin/phpunit"; else PU=phpunit; fi;
   - if [ "$CHECKS" = "yes" ]; then composer require squizlabs/php_codesniffer="~2.3" --prefer-source; fi;
   - if [ "$CHECKS" = "yes" ]; then composer require satooshi/php-coveralls --dev --prefer-source; fi;
-  - php -m
+  # - php -m
   - ls -la /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/
   # Generate the coveralls config (not to keep it in the repo)
   - >
