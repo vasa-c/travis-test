@@ -52,9 +52,9 @@ install:
         echo "json_path: coveralls-upload.json" >> .coveralls.yml &&
         echo "coverage_clover: clover.xml" >> .coveralls.yml;
     fi;
+  - php -r "echo PHP_VERSION.PHP_EOL;"
 
 script:
-  - ls -la
   # Normal run - only phpunit
   - if [ ! "$CHECKS" = "yes" ]; then $PU; fi;
   # Run with checks
